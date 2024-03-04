@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+    <input type="text" id="searchTerm" placeholder="search for images">
+    <input type="text" id="searchNumber" placeholder="how many images">
+    <button onclick="searchDocuments()">Search Documents</button>
+  <div id="app"></div>
+</body>
+<script>
+function searchDocuments() {
+
+    const searchTermInput = document.getElementById('searchTerm');
+    const searchNumberInput = document.getElementById('searchNumber');
+    const searchTerm = encodeURIComponent(searchTermInput.value);
+    const searchNumber = encodeURIComponent(searchNumberInput.value);
+
+
+    const URLinput = `https://api.pexels.com/v1/search?query=${searchTerm}&per_page=${searchNumber}`;
+    console.log(URLinput)
+
+fetch(URLinput,{
+  headers: {
+    'Authorization': 'Ms0dIDq97myFUkd5c03caHqDLym5C1zipaPYwRb7mpXOdg26M3oYlC5z'
+  }
+})
+  .then(response => response.json())
+  .then(body => {
+    const imageList = body.photos.map((photo) => (
+      `<img src="${photo.src.large}"/>`
+    ))
+
+    
+    return imageList
+  })
+  .then(list => {
+    document.getElementById('app').innerHTML = list
+  })
+  .catch(err => {debugger})
+}
+
+ 
+</script>
+</html>
